@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Prediction Result</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&family=Tangerine&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Belleza&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: {{ background_color }};
+        }
+
+        .container {
+            text-align: center;
+            background-color: #d8b89a;
+            width: 100%;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .back-button img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .header {
+            margin-bottom: 20px;
+            height: 30vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            color: #006400;
+            text-align: center;
+            font-family: 'Oleo Script Swash Caps', cursive;
+            font-size: 45px;
+        }
+
+        h2 {
+            font-family: "Belleza", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 40px;
+            color: rgba(0, 0, 0, 0.87);
+        }
+
+        .image-container {
+            width: 100%;
+            height: 70vh;
+            overflow: hidden;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+    <script>
+        function redirectToHomePage() {
+            window.location.href = "{{ url_for('home_page') }}";
+        }
+    </script>
+</head>
+
+<body>
+    <button class="back-button" onclick="redirectToHomePage()">
+        <img src="{{ url_for('static', filename='images/back button.svg') }}" alt="Back">
+    </button>
+    <div class="container">
+        <div class="header">
+            <h1>Crop Prediction<br>Result</h1>
+            <h2>{{ crop }}</h2>
+        </div>
+        <div class="image-container">
+            <img src="{{ image_url }}" alt="{{ crop }}">
+        </div>
+    </div>
+</body>
+
+</html>

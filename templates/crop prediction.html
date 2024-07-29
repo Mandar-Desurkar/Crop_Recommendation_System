@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crop Prediction Form</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: url('{{ url_for('static', filename='images/bg1.jpg') }}') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    position: relative; /* Add this to position the back button */
+}
+.title-container {
+    margin-bottom: 10px;
+}
+
+.form-container {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid black;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5); /* Updated box shadow */
+    width: 320px; /* Reduced width */
+    max-height: 90vh; /* Limit the height to avoid overflow */
+    overflow-y: hidden; /* Disable scrolling within the form */
+}
+
+h1 {
+    color: #006400;
+    text-align: center;
+    font-family: 'Oleo Script Swash Caps', cursive; /* Use the new font */
+    font-size: 36px; /* Increase the font size */
+    font-weight: bold; /* Make the font thicker and bolder */
+    margin: 0; /* Remove default margin */
+    line-height: 1.2; /* Adjust line height for better spacing */
+}
+
+label {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px; /* Reduced margin */
+    font-weight: bold; /* Increase font weight */
+}
+
+input {
+    display: block;
+    width: 100%;
+    padding: 8px; /* Reduced padding */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    background: #e2e7e0;
+    box-sizing: border-box; /* Ensures padding is included in the element's total width and height */
+}
+
+.buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    padding: 8px; /* Reduced padding */
+    border: 2px solid black;
+    color: white;
+    cursor: pointer;
+    width: 35%;
+    font-size: 14px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 12px; /* Make buttons rounded */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.predict {
+    background-color: #006400; /* Default */
+    height: 40px;
+}
+
+.predict:hover {
+    background-color: #7DB57B; /* Hover */
+}
+
+.predict:active {
+    background-color: #3F843E; /* On click */
+}
+
+.reset {
+    background-color: #8b0000; /* Default */
+    height: 40px;
+}
+
+.reset:hover {
+    background-color: #CC827D; /* Hover */
+}
+
+.reset:active {
+    background-color: #CF554D; /* On click */
+}
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="title-container">
+    <h1>Crop<br>Prediction</h1>
+  </div>
+  <div class="form-container">
+    <form id="crop-prediction-form" method="post" action="{{ url_for('crop_result') }}" onsubmit="return validateForm()">
+      <label for="nitrogen">Nitrogen (in ppm)</label>
+      <input type="text" id="nitrogen" name="nitrogen" required>
+      <label for="phosphorus">Phosphorus (in ppm)</label>
+      <input type="text" id="phosphorus" name="phosphorus" required>
+      <label for="potassium">Potassium (in ppm)</label>
+      <input type="text" id="potassium" name="potassium" required>
+      <label for="temperature">Temperature (in °C)</label>
+      <input type="text" id="temperature" name="temperature" required>
+      <label for="humidity">Humidity (in %)</label>
+      <input type="text" id="humidity" name="humidity" required>
+      <label for="ph-level">ph level</label>
+      <input type="text" id="ph-level" name="ph-level" required>
+      <label for="rainfall">Rainfall (in mm)</label>
+      <input type="text" id="rainfall" name="rainfall" required>
+
+      <div class="buttons">
+        <button type="submit" class="predict">Predict</button>
+        <button type="reset" class="reset">Reset</button>
+      </div>
+    </form>
+  </div>
+  <script>
+    function validateForm() {
+      var inputs = document.querySelectorAll('input[type="text"]');
+      var ranges = {
+        nitrogen: [0, 1000],
+        phosphorus: [0, 1000],
+        potassium: [0, 1000],
+        temperature: [-10, 50],
+        humidity: [0, 100],
+        rainfall: [0, 1000]
+      };
+
+      for (var i = 0; i < inputs.length; i++) {
+        var input = inputs[i];
+        var value = parseFloat(input.value);
+        var name = input.name;
+
+        if (isNaN(value)) {
+          alert('Please enter valid numbers.');
+          return false;
+        }
+
+        if (name !== 'ph-level' && (value < ranges[name][0] || value > ranges[name][1])) {
+          alert(name.charAt(0).toUpperCase() + name.slice(1) + ' must be between ' + ranges[name][0] + ' and ' + ranges[name][1] + '.');
+          return false;
+        }
+      }
+      return true;
+    }
+  </script>
+</body>
+</html>
